@@ -167,9 +167,6 @@ namespace LibTessDotNet
 
             regNew._eUp = eNewUp;
             regNew._nodeUp = _dict.InsertBefore(regAbove._nodeUp, regNew);
-            regNew._fixUpperEdge = false;
-            regNew._sentinel = false;
-            regNew._dirty = false;
 
             eNewUp._activeRegion = regNew;
 
@@ -1017,11 +1014,7 @@ namespace LibTessDotNet
 
             var reg = new ActiveRegion();
             reg._eUp = e;
-            reg._windingNumber = 0;
-            reg._inside = false;
-            reg._fixUpperEdge = false;
             reg._sentinel = true;
-            reg._dirty = false;
             reg._nodeUp = _dict.Insert(reg);
         }
 
