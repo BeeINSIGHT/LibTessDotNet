@@ -33,6 +33,7 @@
 
 using System;
 using System.Diagnostics;
+using Vec3 = UnityEngine.Vector3;
 
 namespace LibTessDotNet
 {
@@ -344,9 +345,9 @@ namespace LibTessDotNet
             w0 = 0.5f * t2 / (t1 + t2);
             w1 = 0.5f * t1 / (t1 + t2);
 
-            isect._coords.X += w0 * org._coords.X + w1 * dst._coords.X;
-            isect._coords.Y += w0 * org._coords.Y + w1 * dst._coords.Y;
-            isect._coords.Z += w0 * org._coords.Z + w1 * dst._coords.Z;
+            isect._coords.x += w0 * org._coords.x + w1 * dst._coords.x;
+            isect._coords.y += w0 * org._coords.y + w1 * dst._coords.y;
+            isect._coords.z += w0 * org._coords.z + w1 * dst._coords.z;
         }
 
         /// <summary>
@@ -356,7 +357,7 @@ namespace LibTessDotNet
         /// </summary>
         private void GetIntersectData(MeshUtils.Vertex isect, MeshUtils.Vertex orgUp, MeshUtils.Vertex dstUp, MeshUtils.Vertex orgLo, MeshUtils.Vertex dstLo)
         {
-            isect._coords = Vec3.Zero;
+            isect._coords = Vec3.zero;
             float w0, w1, w2, w3;
             VertexWeights(isect, orgUp, dstUp, out w0, out w1);
             VertexWeights(isect, orgLo, dstLo, out w2, out w3);
