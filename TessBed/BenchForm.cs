@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 using LibTessDotNet;
+using Vec3 = UnityEngine.Vector3;
 
 namespace TessBed
 {
@@ -199,7 +200,7 @@ namespace TessBed
                 var v = new ContourVertex[poly.Count];
                 for (int i = 0; i < poly.Count; i++)
                 {
-                    v[i].Position = new Vec3 { X = poly[i].X, Y = poly[i].Y };
+                    v[i].Position = new Vec3(poly[i].X, poly[i].Y);
                     v[i].Data = poly[i].Color;
                 }
                 tess.AddContour(v, poly.Orientation);
@@ -218,8 +219,8 @@ namespace TessBed
                     if (index == -1)
                         continue;
                     var v = new PolygonPoint {
-                        X = tess.Vertices[index].Position.X,
-                        Y = tess.Vertices[index].Position.Y
+                        X = tess.Vertices[index].Position.x,
+                        Y = tess.Vertices[index].Position.y
                     };
                     poly.Add(v);
                 }

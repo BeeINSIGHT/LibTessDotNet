@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Windows.Forms;
 using LibTessDotNet;
-using System.Drawing;
+using Vec3 = UnityEngine.Vector3;
 
 namespace TessBed
 {
@@ -168,7 +169,7 @@ namespace TessBed
                 var v = new ContourVertex[poly.Count];
                 for (int i = 0; i < poly.Count; i++)
                 {
-                    v[i].Position = new Vec3 { X = poly[i].X, Y = poly[i].Y };
+                    v[i].Position = new Vec3(poly[i].X, poly[i].Y);
                     v[i].Data = poly[i].Color;
                 }
                 _sw.Start();
@@ -190,8 +191,8 @@ namespace TessBed
                     if (index == -1)
                         continue;
                     var v = new PolygonPoint {
-                        X = _tess.Vertices[index].Position.X,
-                        Y = _tess.Vertices[index].Position.Y,
+                        X = _tess.Vertices[index].Position.x,
+                        Y = _tess.Vertices[index].Position.y,
                         Color = (Color)_tess.Vertices[index].Data
                     };
                     poly.Add(v);
