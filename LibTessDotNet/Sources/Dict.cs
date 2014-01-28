@@ -33,9 +33,9 @@
 
 namespace LibTessDotNet
 {
-    public delegate bool LessOrEqual<TValue>(TValue lhs, TValue rhs);
+    internal delegate bool LessOrEqual<TValue>(TValue lhs, TValue rhs);
 
-    public class Dict<TValue> where TValue : class
+    internal class Dict<TValue> where TValue : class
     {
         public class Node
         {

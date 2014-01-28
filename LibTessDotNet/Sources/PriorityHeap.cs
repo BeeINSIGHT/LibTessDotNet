@@ -36,7 +36,7 @@ using System.Diagnostics;
 
 namespace LibTessDotNet
 {
-    public class PriorityHeap<TValue> where TValue : class
+    internal class PriorityHeap<TValue> where TValue : class
     {
         protected class HandleElem
         {

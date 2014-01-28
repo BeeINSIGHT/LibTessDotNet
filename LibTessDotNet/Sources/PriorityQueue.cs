@@ -37,7 +37,7 @@ using System.Diagnostics;
 
 namespace LibTessDotNet
 {
-    public static class PriorityQueue
+    internal static class PriorityQueue
     {
         public struct Handle
         {
@@ -51,7 +51,7 @@ namespace LibTessDotNet
         }
     }
 
-    public class PriorityQueue<TValue> where TValue : class
+    internal class PriorityQueue<TValue> where TValue : class
     {
         private LessOrEqual<TValue> _leq;
         private PriorityHeap<TValue> _heap;
