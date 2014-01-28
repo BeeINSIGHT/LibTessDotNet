@@ -117,9 +117,8 @@ namespace LibTessDotNet
             internal Face _prev, _next;
             internal Edge _anEdge;
 
-            internal Face _trail;
             internal int _n;
-            internal bool _marked, _inside;
+            internal bool _inside;
 
             internal int VertsCount
             {
@@ -208,18 +207,10 @@ namespace LibTessDotNet
             e._Sym = eSym;
             e._Onext = e;
             e._Lnext = eSym;
-            e._Org = null;
-            e._Lface = null;
-            e._winding = 0;
-            e._activeRegion = null;
 
             eSym._Sym = e;
             eSym._Onext = eSym;
             eSym._Lnext = e;
-            eSym._Org = null;
-            eSym._Lface = null;
-            eSym._winding = 0;
-            eSym._activeRegion = null;
 
             return e;
         }
