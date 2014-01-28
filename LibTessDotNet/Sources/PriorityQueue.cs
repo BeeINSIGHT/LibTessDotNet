@@ -75,9 +75,9 @@ namespace LibTessDotNet
             _initialized = false;
         }
 
-        class StackItem
+        struct StackItem
         {
-            internal int p, r;
+            public int p, r;
         };
 
         static void Swap(ref int a, ref int b)
@@ -89,7 +89,8 @@ namespace LibTessDotNet
 
         public void Init()
         {
-            var stack = new Stack<StackItem>();
+            var stack = new StackItem[50];
+            int stackPos = 0;
             int p, r, i, j, piv;
             uint seed = 2016473283;
 
@@ -101,10 +102,10 @@ namespace LibTessDotNet
                 _order[i] = piv;
             }
 
-            stack.Push(new StackItem { p = p, r = r });
-            while (stack.Count > 0)
+            stack[stackPos++] = new StackItem { p = p, r = r };
+            while (stackPos > 0)
             {
-                var top = stack.Pop();
+                var top = stack[--stackPos];
                 p = top.p;
                 r = top.r;
 
@@ -125,12 +126,12 @@ namespace LibTessDotNet
                     Swap(ref _order[i], ref _order[j]);
                     if (i - p < r - j)
                     {
-                        stack.Push(new StackItem { p = j + 1, r = r });
+                        stack[stackPos++] = new StackItem { p = j + 1, r = r };
                         r = i - 1;
                     }
                     else
                     {
-                        stack.Push(new StackItem { p = p, r = i - 1 });
+                        stack[stackPos++] = new StackItem { p = p, r = i - 1 };
                         p = j + 1;
                     }
                 }
