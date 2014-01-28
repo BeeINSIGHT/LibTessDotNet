@@ -39,12 +39,18 @@ namespace LibTessDotNet
     {
         public class Node
         {
-            internal TValue _key;
+            public readonly TValue Key;
             internal Node _prev, _next;
 
-            public TValue Key { get { return _key; } }
             public Node Prev { get { return _prev; } }
             public Node Next { get { return _next; } }
+
+            public Node() { }
+
+            public Node(TValue key)
+            {
+                Key = key;
+            }
         }
 
         private LessOrEqual<TValue> _leq;
@@ -54,7 +60,7 @@ namespace LibTessDotNet
         {
             _leq = leq;
 
-            _head = new Node { _key = null };
+            _head = new Node();
             _head._prev = _head;
             _head._next = _head;
         }
@@ -68,9 +74,9 @@ namespace LibTessDotNet
         {
             do {
                 node = node._prev;
-            } while (node._key != null && !_leq(node._key, key));
+            } while (node.Key != null && !_leq(node.Key, key));
 
-            var newNode = new Node { _key = key };
+            var newNode = new Node(key);
             newNode._next = node._next;
             node._next._prev = newNode;
             newNode._prev = node;
@@ -84,7 +90,7 @@ namespace LibTessDotNet
             var node = _head;
             do {
                 node = node._next;
-            } while (node._key != null && !_leq(key, node._key));
+            } while (node.Key != null && !_leq(key, node.Key));
             return node;
         }
 
