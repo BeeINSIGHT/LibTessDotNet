@@ -33,6 +33,7 @@ namespace TessBed
         Lib[] _libs = new Lib[] {
             new Lib { Name = "Poly2Tri", Triangulate = (pset, loops) => {
                 var result = new LibResult();
+                try {
                 // Output
                 var rpset = ToP2T(pset);
                 Poly2Tri.P2T.Triangulate(rpset);
@@ -47,12 +48,13 @@ namespace TessBed
                     sw.Stop();
                 }
                 result.Time = sw.Elapsed.TotalSeconds;
-
+                } catch { result.Time = double.NaN; }
                 return result;
             } },
             new Lib { Name = "LibTessDotNet", Triangulate = (pset, loops) => {
                 var result = new LibResult();
                 var tess = new Tess();
+                try {
                 // Output
                 ToTess(pset, tess);
                 tess.Tessellate(WindingRule.EvenOdd, ElementType.Polygons, 3);
@@ -67,6 +69,7 @@ namespace TessBed
                     sw.Stop();
                 }
                 result.Time = sw.Elapsed.TotalSeconds;
+                } catch { result.Time = double.NaN; }
                 return result;
             } }
         };
@@ -247,6 +250,7 @@ namespace TessBed
             if (e.ColumnIndex == 0) // Asset column
                 return;
             int colMin = 1;
+            int colErr = 0;
             var row = data.Rows[e.RowIndex];
             for (int i = 1; i < row.Cells.Count; i++)
             {
@@ -256,10 +260,18 @@ namespace TessBed
                 {
                     colMin = i;
                 }
+                if (double.IsNaN(val))
+                {
+                    colErr = i;
+                }
             }
             if (e.ColumnIndex == colMin)
             {
                 e.CellStyle.ForeColor = Color.Green;
+            }
+            if (e.ColumnIndex == colErr)
+            {
+                e.CellStyle.ForeColor = Color.Red;
             }
         }
     }
