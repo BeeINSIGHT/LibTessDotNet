@@ -39,7 +39,7 @@ namespace LibTessDotNet
 {
     public class PriorityQueue<TValue> where TValue : class
     {
-        private PriorityHeap<TValue>.LessOrEqual _leq;
+        private LessOrEqual<TValue> _leq;
         private PriorityHeap<TValue> _heap;
         private TValue[] _keys;
         private int[] _order;
@@ -49,7 +49,7 @@ namespace LibTessDotNet
 
         public bool Empty { get { return _size == 0 && _heap.Empty; } }
 
-        public PriorityQueue(int initialSize, PriorityHeap<TValue>.LessOrEqual leq)
+        public PriorityQueue(int initialSize, LessOrEqual<TValue> leq)
         {
             _leq = leq;
             _heap = new PriorityHeap<TValue>(initialSize, leq);

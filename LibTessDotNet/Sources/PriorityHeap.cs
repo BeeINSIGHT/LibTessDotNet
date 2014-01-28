@@ -44,15 +44,13 @@ namespace LibTessDotNet
 
     public class PriorityHeap<TValue> where TValue : class
     {
-        public delegate bool LessOrEqual(TValue lhs, TValue rhs);
-
         protected class HandleElem
         {
             internal TValue _key;
             internal int _node;
         }
 
-        private LessOrEqual _leq;
+        private LessOrEqual<TValue> _leq;
         private int[] _nodes;
         private HandleElem[] _handles;
         private int _size, _max;
@@ -61,7 +59,7 @@ namespace LibTessDotNet
 
         public bool Empty { get { return _size == 0; } }
 
-        public PriorityHeap(int initialSize, LessOrEqual leq)
+        public PriorityHeap(int initialSize, LessOrEqual<TValue> leq)
         {
             _leq = leq;
 

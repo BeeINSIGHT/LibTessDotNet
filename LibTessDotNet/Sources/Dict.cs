@@ -33,6 +33,8 @@
 
 namespace LibTessDotNet
 {
+    public delegate bool LessOrEqual<TValue>(TValue lhs, TValue rhs);
+
     public class Dict<TValue> where TValue : class
     {
         public class Node
@@ -45,12 +47,10 @@ namespace LibTessDotNet
             public Node Next { get { return _next; } }
         }
 
-        public delegate bool LessOrEqual(TValue lhs, TValue rhs);
-
-        private LessOrEqual _leq;
+        private LessOrEqual<TValue> _leq;
         Node _head;
 
-        public Dict(LessOrEqual leq)
+        public Dict(LessOrEqual<TValue> leq)
         {
             _leq = leq;
 
