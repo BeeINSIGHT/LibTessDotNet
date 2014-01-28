@@ -37,6 +37,20 @@ using System.Diagnostics;
 
 namespace LibTessDotNet
 {
+    public static class PriorityQueue
+    {
+        public struct Handle
+        {
+            public const int Invalid = 0x0fffffff;
+            internal readonly int _handle;
+
+            internal Handle(int handle)
+            {
+                _handle = handle;
+            }
+        }
+    }
+
     public class PriorityQueue<TValue> where TValue : class
     {
         private LessOrEqual<TValue> _leq;
@@ -145,7 +159,7 @@ namespace LibTessDotNet
             _heap.Init();
         }
 
-        public PQHandle Insert(TValue value)
+        public PriorityQueue.Handle Insert(TValue value)
         {
             if (_initialized)
             {
@@ -160,7 +174,7 @@ namespace LibTessDotNet
             }
 
             _keys[curr] = value;
-            return new PQHandle { _handle = -(curr + 1) };
+            return new PriorityQueue.Handle(-(curr + 1));
         }
 
         public TValue ExtractMin()
@@ -203,7 +217,7 @@ namespace LibTessDotNet
             return sortMin;
         }
 
-        public void Remove(PQHandle handle)
+        public void Remove(PriorityQueue.Handle handle)
         {
             Debug.Assert(_initialized);
 

@@ -36,12 +36,6 @@ using System.Diagnostics;
 
 namespace LibTessDotNet
 {
-    public struct PQHandle
-    {
-        public static readonly int Invalid = 0x0fffffff;
-        internal int _handle;
-    }
-
     public class PriorityHeap<TValue> where TValue : class
     {
         protected class HandleElem
@@ -136,7 +130,7 @@ namespace LibTessDotNet
             _initialized = true;
         }
 
-        public PQHandle Insert(TValue value)
+        public PriorityQueue.Handle Insert(TValue value)
         {
             int curr = ++_size;
             if ((curr * 2) > _max)
@@ -173,8 +167,8 @@ namespace LibTessDotNet
                 FloatUp(curr);
             }
 
-            Debug.Assert(free != PQHandle.Invalid);
-            return new PQHandle { _handle = free };
+            Debug.Assert(free != PriorityQueue.Handle.Invalid);
+            return new PriorityQueue.Handle(free);
         }
 
         public TValue ExtractMin()
@@ -208,7 +202,7 @@ namespace LibTessDotNet
             return _handles[_nodes[1]]._key;
         }
 
-        public void Remove(PQHandle handle)
+        public void Remove(PriorityQueue.Handle handle)
         {
             Debug.Assert(_initialized);
 

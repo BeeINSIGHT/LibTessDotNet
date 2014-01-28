@@ -107,7 +107,7 @@ namespace LibTessDotNet
 
             internal Vec3 _coords;
             internal float _s, _t;
-            internal PQHandle _pqHandle;
+            internal PriorityQueue.Handle _pqHandle;
             internal int _n;
             internal object _data;
         }

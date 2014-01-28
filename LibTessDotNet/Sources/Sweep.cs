@@ -655,10 +655,6 @@ namespace LibTessDotNet
             eUp._Org._s = isect._s;
             eUp._Org._t = isect._t;
             eUp._Org._pqHandle = _pq.Insert(eUp._Org);
-            if (eUp._Org._pqHandle._handle == PQHandle.Invalid)
-            {
-                throw new InvalidOperationException("PQHandle should not be invalid");
-            }
             GetIntersectData(eUp._Org, orgUp, dstUp, orgLo, dstLo);
             RegionAbove(regUp)._dirty = regUp._dirty = regLo._dirty = true;
             return false;
@@ -1134,10 +1130,6 @@ namespace LibTessDotNet
             vHead = _mesh._vHead;
             for( v = vHead._next; v != vHead; v = v._next ) {
                 v._pqHandle = _pq.Insert(v);
-                if (v._pqHandle._handle == PQHandle.Invalid)
-                {
-                    throw new InvalidOperationException("PQHandle should not be invalid");
-                }
             }
             _pq.Init();
         }
