@@ -249,19 +249,18 @@ namespace LibTessDotNet
         /// the new vertex *before* vNext so that algorithms which walk the vertex
         /// list will not see the newly created vertices.
         /// </summary>
-        public static void MakeVertex(Vertex vNew, Edge eOrig, Vertex vNext)
+        public static void MakeVertex(Edge eOrig, Vertex vNext)
         {
-            Debug.Assert(vNew != null);
+            var vNew = new Vertex();
 
             // insert in circular doubly-linked list before vNext
             var vPrev = vNext._prev;
             vNew._prev = vPrev;
-            vPrev._next = vNew;
             vNew._next = vNext;
+            vPrev._next = vNew;
             vNext._prev = vNew;
 
             vNew._anEdge = eOrig;
-            // leave coords, s, t undefined
 
             // fix other edges on this vertex loop
             var e = eOrig;
@@ -278,20 +277,18 @@ namespace LibTessDotNet
         /// the new face *before* fNext so that algorithms which walk the face
         /// list will not see the newly created faces.
         /// </summary>
-        public static void MakeFace(Face fNew, Edge eOrig, Face fNext)
+        public static void MakeFace(Edge eOrig, Face fNext)
         {
-            Debug.Assert(fNew != null);
+            var fNew = new Face();
 
             // insert in circular doubly-linked list before fNext
             var fPrev = fNext._prev;
             fNew._prev = fPrev;
-            fPrev._next = fNew;
             fNew._next = fNext;
+            fPrev._next = fNew;
             fNext._prev = fNew;
 
             fNew._anEdge = eOrig;
-            fNew._trail = null;
-            fNew._marked = false;
 
             // The new face is marked "inside" if the old one was. This is a
             // convenience for the common case where a face has been split in two.

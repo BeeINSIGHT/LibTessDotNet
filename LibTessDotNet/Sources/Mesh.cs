@@ -86,9 +86,9 @@ namespace LibTessDotNet
         {
             var e = MeshUtils.MakeEdge(_eHead);
 
-            MeshUtils.MakeVertex(new MeshUtils.Vertex(), e, _vHead);
-            MeshUtils.MakeVertex(new MeshUtils.Vertex(), e._Sym, _vHead);
-            MeshUtils.MakeFace(new MeshUtils.Face(), e, _fHead);
+            MeshUtils.MakeVertex(e, _vHead);
+            MeshUtils.MakeVertex(e._Sym, _vHead);
+            MeshUtils.MakeFace(e, _fHead);
 
             return e;
         }
@@ -146,14 +146,14 @@ namespace LibTessDotNet
             {
                 // We split one vertex into two -- the new vertex is eDst->Org.
                 // Make sure the old vertex points to a valid half-edge.
-                MeshUtils.MakeVertex(new MeshUtils.Vertex(), eDst, eOrg._Org);
+                MeshUtils.MakeVertex(eDst, eOrg._Org);
                 eOrg._Org._anEdge = eOrg;
             }
             if (!joiningLoops)
             {
                 // We split one loop into two -- the new loop is eDst->Lface.
                 // Make sure the old face points to a valid half-edge.
-                MeshUtils.MakeFace(new MeshUtils.Face(), eDst, eOrg._Lface);
+                MeshUtils.MakeFace(eDst, eOrg._Lface);
                 eOrg._Lface._anEdge = eOrg;
             }
         }
@@ -195,7 +195,7 @@ namespace LibTessDotNet
                 if (!joiningLoops)
                 {
                     // We are splitting one loop into two -- create a new loop for eDel.
-                    MeshUtils.MakeFace(new MeshUtils.Face(), eDel, eDel._Lface);
+                    MeshUtils.MakeFace(eDel, eDel._Lface);
                 }
             }
 
@@ -233,7 +233,7 @@ namespace LibTessDotNet
 
             // Set vertex and face information
             eNew._Org = eOrg._Dst;
-            MeshUtils.MakeVertex(new MeshUtils.Vertex(), eNewSym, eNew._Org);
+            MeshUtils.MakeVertex(eNewSym, eNew._Org);
             eNew._Lface = eNewSym._Lface = eOrg._Lface;
 
             return eNew;
@@ -300,7 +300,7 @@ namespace LibTessDotNet
 
             if (!joiningLoops)
             {
-                MeshUtils.MakeFace(new MeshUtils.Face(), eNew, eOrg._Lface);
+                MeshUtils.MakeFace(eNew, eOrg._Lface);
             }
 
             return eNew;
