@@ -48,12 +48,12 @@ namespace LibTessDotNet
 
         private ActiveRegion RegionBelow(ActiveRegion reg)
         {
-            return reg._nodeUp._prev._key;
+            return reg._nodeUp.Prev.Key;
         }
 
         private ActiveRegion RegionAbove(ActiveRegion reg)
         {
-            return reg._nodeUp._next._key;
+            return reg._nodeUp.Next.Key;
         }
 
         /// <summary>
