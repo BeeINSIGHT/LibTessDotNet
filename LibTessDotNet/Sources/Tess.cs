@@ -31,9 +31,7 @@
 ** LibTessDotNet: Remi Gillig, https://github.com/speps/LibTessDotNet
 */
 
-using System;
 using System.Diagnostics;
-using Vec3 = UnityEngine.Vector3;
 
 namespace LibTessDotNet
 {
@@ -103,7 +101,7 @@ namespace LibTessDotNet
 
         public Tess()
         {
-            _normal = Vec3.zero;
+            _normal = Vec3.Zero;
             _bminX = _bminY = _bmaxX = _bmaxY = 0.0f;
 
             _windingRule = WindingRule.EvenOdd;
@@ -119,30 +117,30 @@ namespace LibTessDotNet
         {
             var v = _mesh._vHead._next;
 
-            var minVal = new Vec3(v._coords.x, v._coords.y, v._coords.z);
+            var minVal = new float[3] { v._coords.X, v._coords.Y, v._coords.Z };
             var minVert = new MeshUtils.Vertex[3] { v, v, v };
-            var maxVal = new Vec3(v._coords.x, v._coords.y, v._coords.z);
+            var maxVal = new float[3] { v._coords.X, v._coords.Y, v._coords.Z };
             var maxVert = new MeshUtils.Vertex[3] { v, v, v };
 
             for (; v != _mesh._vHead; v = v._next)
             {
-                if (v._coords.x < minVal.x) { minVal.x = v._coords.x; minVert[0] = v; }
-                if (v._coords.y < minVal.y) { minVal.y = v._coords.y; minVert[1] = v; }
-                if (v._coords.z < minVal.z) { minVal.z = v._coords.z; minVert[2] = v; }
-                if (v._coords.x > maxVal.x) { maxVal.x = v._coords.x; maxVert[0] = v; }
-                if (v._coords.y > maxVal.y) { maxVal.y = v._coords.y; maxVert[1] = v; }
-                if (v._coords.z > maxVal.z) { maxVal.z = v._coords.z; maxVert[2] = v; }
+                if (v._coords.X < minVal[0]) { minVal[0] = v._coords.X; minVert[0] = v; }
+                if (v._coords.Y < minVal[1]) { minVal[1] = v._coords.Y; minVert[1] = v; }
+                if (v._coords.Z < minVal[2]) { minVal[2] = v._coords.Z; minVert[2] = v; }
+                if (v._coords.X > maxVal[0]) { maxVal[0] = v._coords.X; maxVert[0] = v; }
+                if (v._coords.Y > maxVal[1]) { maxVal[1] = v._coords.Y; maxVert[1] = v; }
+                if (v._coords.Z > maxVal[2]) { maxVal[2] = v._coords.Z; maxVert[2] = v; }
             }
 
             // Find two vertices separated by at least 1/sqrt(3) of the maximum
             // distance between any two vertices
             int i = 0;
-            if (maxVal.y - minVal.y > maxVal.x  - minVal.x ) { i = 1; }
-            if (maxVal.z - minVal.z > maxVal[i] - minVal[i]) { i = 2; }
+            if (maxVal[1] - minVal[1] > maxVal[0] - minVal[0]) { i = 1; }
+            if (maxVal[2] - minVal[2] > maxVal[i] - minVal[i]) { i = 2; }
             if (minVal[i] >= maxVal[i])
             {
                 // All vertices are the same -- normal doesn't matter
-                norm = new Vec3(0.0f, 0.0f, 1.0f);
+                norm = new Vec3 { X = 0.0f, Y = 0.0f, Z = 1.0f };
                 return;
             }
 
@@ -152,18 +150,14 @@ namespace LibTessDotNet
             var v1 = minVert[i];
             var v2 = maxVert[i];
             Vec3 d1, d2, tNorm;
-            d1.x = v1._coords.x - v2._coords.x;
-            d1.y = v1._coords.y - v2._coords.y;
-            d1.z = v1._coords.z - v2._coords.z;
+            Vec3.Sub(ref v1._coords, ref v2._coords, out d1);
             for (v = _mesh._vHead._next; v != _mesh._vHead; v = v._next)
             {
-                d2.x = v._coords.x - v2._coords.x;
-                d2.y = v._coords.y - v2._coords.y;
-                d2.z = v._coords.z - v2._coords.z;
-                tNorm.x = d1.y * d2.z - d1.z * d2.y;
-                tNorm.y = d1.z * d2.x - d1.x * d2.z;
-                tNorm.z = d1.x * d2.y - d1.y * d2.x;
-                tLen2 = tNorm.x*tNorm.x + tNorm.y*tNorm.y + tNorm.z*tNorm.z;
+                Vec3.Sub(ref v._coords, ref v2._coords, out d2);
+                tNorm.X = d1.Y * d2.Z - d1.Z * d2.Y;
+                tNorm.Y = d1.Z * d2.X - d1.X * d2.Z;
+                tNorm.Z = d1.X * d2.Y - d1.Y * d2.X;
+                tLen2 = tNorm.X*tNorm.X + tNorm.Y*tNorm.Y + tNorm.Z*tNorm.Z;
                 if (tLen2 > maxLen2)
                 {
                     maxLen2 = tLen2;
@@ -174,10 +168,8 @@ namespace LibTessDotNet
             if (maxLen2 <= 0.0f)
             {
                 // All points lie on a single line -- any decent normal will do
-                i = 0;
-                norm = Vec3.zero;
-                if (Math.Abs(d1.y) > Math.Abs(d1.x)) i = 1;
-                if (Math.Abs(d1.z) > Math.Abs(i == 0 ? d1.x : d1.y)) i = 2;
+                norm = Vec3.Zero;
+                i = Vec3.LongAxis(ref d1);
                 norm[i] = 1.0f;
             }
         }
@@ -206,9 +198,7 @@ namespace LibTessDotNet
                 {
                     v._t = -v._t;
                 }
-                _tUnit.x = -_tUnit.x;
-                _tUnit.y = -_tUnit.y;
-                _tUnit.z = -_tUnit.z;
+                Vec3.Neg(ref _tUnit);
             }
         }
 
@@ -217,15 +207,13 @@ namespace LibTessDotNet
             var norm = _normal;
 
             bool computedNormal = false;
-            if (norm.x == 0.0f && norm.y == 0.0f && norm.z == 0.0f)
+            if (norm.X == 0.0f && norm.Y == 0.0f && norm.Z == 0.0f)
             {
                 ComputeNormal(ref norm);
                 computedNormal = true;
             }
 
-            int i = 0;
-            if (Math.Abs(norm.y) > Math.Abs(norm.x)) i = 1;
-            if (Math.Abs(norm.z) > Math.Abs(i == 0 ? norm.x : norm.y)) i = 2;
+            int i = Vec3.LongAxis(ref norm);
 
             _sUnit[i] = 0.0f;
             _sUnit[(i + 1) % 3] = SUnitX;
@@ -238,8 +226,8 @@ namespace LibTessDotNet
             // Project the vertices onto the sweep plane
             for (var v = _mesh._vHead._next; v != _mesh._vHead; v = v._next)
             {
-                v._s = v._coords.x * _sUnit.x + v._coords.y * _sUnit.y + v._coords.z * _sUnit.z;
-                v._t = v._coords.x * _tUnit.x + v._coords.y * _tUnit.y + v._coords.z * _tUnit.z;
+                Vec3.Dot(ref v._coords, ref _sUnit, out v._s);
+                Vec3.Dot(ref v._coords, ref _tUnit, out v._t);
             }
             if (computedNormal)
             {
@@ -601,8 +589,8 @@ namespace LibTessDotNet
                 var v0 = vertices[i];
                 var v1 = vertices[(i + 1) % vertices.Length];
 
-                area += v0.Position.x * v1.Position.y;
-                area -= v0.Position.y * v1.Position.x;
+                area += v0.Position.X * v1.Position.Y;
+                area -= v0.Position.Y * v1.Position.X;
             }
 
             return area * 0.5f;
