@@ -36,14 +36,14 @@ namespace TessBed
                 var result = new LibResult();
                 try {
                 // Output
-                var rpset = ToP2T(pset);
+                var rpset = PolyConvert.ToP2T(pset);
                 Poly2Tri.P2T.Triangulate(rpset);
-                result.Output = FromP2T(rpset);
+                result.Output = PolyConvert.FromP2T(rpset);
                 // Time
                 var sw = new Stopwatch();
                 for (int i = 0; i < loops; i++)
                 {
-                    rpset = ToP2T(pset);
+                    rpset = PolyConvert.ToP2T(pset);
                     sw.Start();
                     Poly2Tri.P2T.Triangulate(rpset);
                     sw.Stop();
@@ -57,15 +57,15 @@ namespace TessBed
                 var tess = new Tess();
                 try {
                 // Output
-                ToTess(pset, tess);
+                PolyConvert.ToTess(pset, tess);
                 tess.Tessellate(WindingRule.EvenOdd, ElementType.Polygons, 3);
-                result.Output = FromTess(tess);
+                result.Output = PolyConvert.FromTess(tess);
                 // Time
                 var sw = new Stopwatch();
                 for (int i = 0; i < loops; i++)
                 {
                     sw.Start();
-                    ToTess(pset, tess);
+                    PolyConvert.ToTess(pset, tess);
                     tess.Tessellate(WindingRule.EvenOdd, ElementType.Polygons, 3);
                     sw.Stop();
                 }

@@ -64,6 +64,11 @@ namespace LibTessDotNet
     {
         public Vec3 Position;
         public object Data;
+
+        public override string ToString()
+        {
+            return string.Format("{0}, {1}", Position, Data);
+        }
     }
 
     public delegate object CombineCallback(Vec3 position, object[] data, float[] weights);
@@ -93,7 +98,8 @@ namespace LibTessDotNet
         public Vec3 Normal { get { return _normal; } set { _normal = value; } }
 
         public float SUnitX = 1.0f;
-        public float SUnitY = 1.0f;
+        public float SUnitY = 0.0f;
+        public float SentinelCoord = 4e30f;
 
         public ContourVertex[] Vertices { get { return _vertices; } }
         public int VertexCount { get { return _vertexCount; } }
